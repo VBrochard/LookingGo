@@ -50,9 +50,9 @@ func difficulty() int {
 	case 1:
 		return 999
 	case 2:
-		return 15
+		return 12
 	case 3:
-		return 5
+		return 6
 	case 0:
 		return -1
 	}

@@ -19,7 +19,7 @@ func clearScreen() {
 	cmd.Run()
 }
 
-func Run() {
+func Run() int {
 	fmt.Println("Bienvenue dans le Juste Prix")
 	var devinette int
 	var prix int
@@ -31,7 +31,7 @@ func Run() {
 		fmt.Scan(&devinette)
 		if devinette == prix {
 			fmt.Printf("Bravo, en %d essais", essai)
-			break
+			return -1
 		} else {
 			if devinette-prix < 0 {
 				clearScreen()

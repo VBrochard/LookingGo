@@ -37,7 +37,9 @@ func main() {
 				continue
 			}
 		case 2:
-			justeprix.Run()
+			if justeprix.Run() == -1 {
+				continue
+			}
 		case 0:
 			return
 		}
