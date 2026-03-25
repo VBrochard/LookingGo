@@ -10,6 +10,12 @@ import (
 	"strings"
 )
 
+const (
+	Reset = "\033[0m"
+	Rouge = "\033[31m"
+	Vert  = "\033[32m"
+)
+
 func clearScreen() {
 	var cmd *exec.Cmd
 	if runtime.GOOS == "windows" {
@@ -26,7 +32,7 @@ func research(lettre string, mot string, devinator []string) []string {
 		fmt.Println("Oui")
 		for i := range len(mot) {
 			if string(mot[i]) == lettre {
-				devinator[i] = string(lettre)
+				devinator[i] = Vert + string(lettre) + Reset
 			}
 		}
 		return devinator
@@ -54,7 +60,7 @@ func difficulty() int {
 	case 3:
 		return 6
 	case 0:
-		return -1
+		return 0
 	}
 	return 0
 }
@@ -64,13 +70,13 @@ func Run() int {
 	mot := dico[rand.Intn(len(dico))]
 	devinator := []string{}
 	for range len(mot) {
-		devinator = append(devinator, "_")
+		devinator = append(devinator, Rouge+"_"+Reset)
 	}
 	var devinette string
 	var life int
 	life = difficulty()
 	if life == -1 {
-		return -1
+		return 0
 	}
 	for {
 		clearScreen()
@@ -87,9 +93,12 @@ func Run() int {
 			}
 		}
 		devinator = research(devinette, mot, devinator)
-		if !slices.Contains(devinator, "_") {
+		if !slices.Contains(devinator, Rouge+"_"+Reset) {
+			clearScreen()
 			fmt.Println("Le mot était bien " + strings.Join(devinator, ""))
 			fmt.Println("Bravo c'est le gg")
+			fmt.Println("\n[Appuyez sur Entrée pour revenir au menu]")
+			fmt.Scanln()
 			break
 		}
 	}

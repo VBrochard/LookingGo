@@ -20,6 +20,7 @@ func clearScreen() {
 }
 
 func Run() int {
+	clearScreen()
 	fmt.Println("Bienvenue dans le Juste Prix")
 	var devinette int
 	var prix int

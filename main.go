@@ -33,9 +33,7 @@ func main() {
 
 		switch choix {
 		case 1:
-			if pendu.Run() == -1 {
-				continue
-			}
+			pendu.Run()
 		case 2:
 			if justeprix.Run() == -1 {
 				continue
