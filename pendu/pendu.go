@@ -2,6 +2,7 @@ package pendu
 
 import (
 	"fmt"
+	"math/rand"
 	"slices"
 	"strings"
 )
@@ -22,11 +23,8 @@ func research(lettre string, mot string, devinator []string) []string {
 }
 
 func Run() {
-	mot := "loupe"
-	slice := []string{}
-	for _, c := range mot {
-		slice = append(slice, string(c))
-	}
+	mots := []string{"bonjour", "golang", "pendu", "clavier", "ornithorynque", "train"}
+	mot := mots[rand.Intn(len(mots))]
 	devinator := []string{}
 	for range len(mot) {
 		devinator = append(devinator, "_")
