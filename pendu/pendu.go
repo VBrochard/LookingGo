@@ -6,6 +6,7 @@ import (
 	"math/rand"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"runtime"
 	"slices"
 	"strings"
@@ -17,10 +18,17 @@ const (
 	Vert  = "\033[32m"
 )
 
-func loadDico(filename string) []string {
-	file, err := os.Open(filename)
+func loadDico() []string {
+	nomFichier := "pendu/dico.txt"
+	ex, err := os.Executable()
 	if err != nil {
-		return []string{"erreur", "fichier", "manquant"}
+		panic(err)
+	}
+	exPath := filepath.Dir(ex)
+	cheminComplet := filepath.Join(exPath, nomFichier)
+	file, err := os.Open(cheminComplet)
+	if err != nil {
+		return []string{"erreur", "fichier", "introuvable"}
 	}
 	defer file.Close()
 	var mots []string
@@ -84,7 +92,7 @@ func difficulty() int {
 }
 
 func Run() int {
-	dico := loadDico("dico.txt")
+	dico := loadDico()
 	mot := dico[rand.Intn(len(dico))]
 	depot := []string{}
 	devinator := []string{}
