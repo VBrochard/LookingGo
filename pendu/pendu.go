@@ -1,6 +1,7 @@
 package pendu
 
 import (
+	"bufio"
 	"fmt"
 	"math/rand"
 	"os"
@@ -15,6 +16,23 @@ const (
 	Rouge = "\033[31m"
 	Vert  = "\033[32m"
 )
+
+func loadDico(filename string) []string {
+	file, err := os.Open(filename)
+	if err != nil {
+		return []string{"erreur", "fichier", "manquant"}
+	}
+	defer file.Close()
+	var mots []string
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		mot := strings.TrimSpace(scanner.Text())
+		if mot != "" {
+			mots = append(mots, mot)
+		}
+	}
+	return mots
+}
 
 func clearScreen() {
 	var cmd *exec.Cmd
@@ -66,8 +84,9 @@ func difficulty() int {
 }
 
 func Run() int {
-	dico := []string{"bonjour", "golang", "pendu", "clavier", "ornithorynque", "train", "processeur", "chaton", "zebre", "yoga"}
+	dico := loadDico("dico.txt")
 	mot := dico[rand.Intn(len(dico))]
+	depot := []string{}
 	devinator := []string{}
 	for range len(mot) {
 		devinator = append(devinator, Rouge+"_"+Reset)
@@ -82,11 +101,16 @@ func Run() int {
 		clearScreen()
 		fmt.Printf("Il vous reste %d vies \n", life)
 		fmt.Println(strings.Join(devinator, " "))
+		fmt.Println("Lettres déjà proposée :")
+		fmt.Println(strings.Join(depot, " "))
 		fmt.Println("Donner une lettre :")
 		fmt.Scan(&devinette)
 		devinette = string(devinette[0])
 		if !strings.Contains(mot, devinette) {
 			life--
+			if !slices.Contains(depot, devinette) {
+				depot = append(depot, devinette)
+			}
 			if life == 0 {
 				fmt.Println("Perdue")
 				return 0
